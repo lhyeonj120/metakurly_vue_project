@@ -6,7 +6,7 @@
 		    <h4 class="widget-title">주문내역</h4>
 		    <div class="divider"></div>
 		
-		    <div v-for="order in orders" :key="order.o_id">
+		    <div v-for="order in orders" :key="order.id">
 			    <div class="blog-item">
 					  <a class="post-thumb" href="">
 						  <img :src='`https://img-cf.kurly.com/shop/data/goods/${order.img_url}`' alt="">
@@ -37,8 +37,8 @@ export default {
   setup(){
     const order = ref('');
     const orders = ref([
-      {o_id: 1, orders_date: '2023-02-22', status: '배송완료', total_amount: 3, img_url: '1655775819130l0.jpg', brand: '스윗밸런스', name: '오늘의 샐러드', price: 17700},
-      {o_id: 2, orders_date: '2023-03-10', status: '배송준비중', total_amount: 3, img_url: '1637926173262l0.jpeg', brand: '크리넥스', name: '데코앤소프트 화장지', price: 45500}
+      {id: 1, orders_date: '2023-02-22', status: '배송완료', total_amount: 3, img_url: '1655775819130l0.jpg', brand: '스윗밸런스', name: '오늘의 샐러드', price: 17700},
+      {id: 2, orders_date: '2023-03-10', status: '배송준비중', total_amount: 3, img_url: '1637926173262l0.jpeg', brand: '크리넥스', name: '데코앤소프트 화장지', price: 45500}
     ]);
     
     return{
