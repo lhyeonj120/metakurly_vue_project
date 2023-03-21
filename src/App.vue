@@ -140,5 +140,9 @@ export default {
 </script>
 
 <style>
-
+@import "@/assets/css/animate.css";
+@import "@/assets/css/bootstrap.css";
+@import "@/assets/css/maicons.css";
+@import "@/assets/css/owl.carousel.css";
+@import "@/assets/css/theme.css";
 </style>
