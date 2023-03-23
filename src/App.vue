@@ -145,4 +145,5 @@ export default {
 @import "@/assets/css/maicons.css";
 @import "@/assets/css/owl.carousel.css";
 @import "@/assets/css/theme.css";
+@import "@/assets/css/login.css";
 </style>

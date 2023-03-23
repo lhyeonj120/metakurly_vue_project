@@ -164,10 +164,10 @@
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; float: left; font-weight: normal;">
             사용 포인트
           </strong><br>
-          <div id="errorMsg" style="visibility: hidden; color:red">입력한 포인트를 사용할 수 없습니다</div>
+          <div id="errorMsg" v-show="toggleErrorMsg" style="color:red">입력한 포인트를 사용할 수 없습니다</div>
           <span
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; float: right; color: #f47330; font-weight: bold; font-size: 16px; letter-spacing: 0;">
-            <input type="text" name="usePoint" id="usePointNum" style="width: 93%" v-model="payment.point" @change="inputPoint">
+            <input type="text" id="usePointNum" v-model="usePoint" @change="inputPoint" style="width: 90%">
             <em
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; display: inline-block; margin-left: 3px; font-style: normal; font-weight: bold; font-size: 12px; vertical-align: 2px; letter-spacing: -1px;">
               원
@@ -203,7 +203,7 @@
           </strong>
           <span
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; float: right; color: #ff2828; font-weight: bold; font-size: 28px; line-height: 38px; letter-spacing: 0;">
-            <p id="finalPrice" style="display: inline">{{paymentAmount}}</p>
+            <p id="finalPrice" style="display: inline; color: #ff2828">{{paymentAmount}}</p>
             <em
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; display: inline-block; margin-left: 3px; font-style: normal; font-weight: bold; font-size: 12px; vertical-align: 2px; letter-spacing: -1px;">
               원
@@ -219,28 +219,36 @@
 import {ref} from 'vue';
 export default {
   setup(){
-    const member = ref([
+    const member = ref(
       {id: 1, name: '홍길동', email: 'kosa@metanet.com', phone: '010-1234-5678', address: '서울', point: 2000}
-    ]);
+    );
     const products = ref([
       {id: 1, brand: '스윗밸런스', price: 5900, name: '오늘의 샐러드', img_url: '1655775819130l0.jpg', quantity: 2}
     ]);
-    const payment = ref([
-      {}
-    ]);
-    const totalPrice = ref(0);
-    const paymentAmount = ref(0);
-
+    const usePoint = ref(0);
+    const totalPrice = ref(products.value[0].price * products.value[0].quantity);
+    const paymentAmount = ref(totalPrice.value - usePoint.value);
+    const toggleErrorMsg = ref(false);
+ 
     const inputPoint = () => {
-      
+      if(totalPrice.value < usePoint.value || member.value.point < usePoint.value){
+        toggleErrorMsg.value = true;
+        usePoint.value = 0;
+      }
+      else{
+        toggleErrorMsg.value = false;
+        paymentAmount.value = totalPrice.value - usePoint.value;
+      }
     }
 
     return {
       member,
       products,
+      usePoint,
       totalPrice,
       paymentAmount,
-      payment
+      inputPoint,
+      toggleErrorMsg,
     }
   }
 }
