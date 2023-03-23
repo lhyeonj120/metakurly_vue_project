@@ -182,8 +182,8 @@
           </strong>
           <span
             style="margin: 0; padding: 0; border: 0; box-sizing: border-box; font-size: 14px; line-height: 22px; font-family: '맑은고딕', 'Malgun Gothic', 'dotum', sans-serif; letter-spacing: -1px; float: right; color: #f47330; font-weight: bold; font-size: 16px; letter-spacing: 0;">
-            <select name="paymentMethod" id="method">
-              <option id="optionId" value="">선택</option>
+            <select name="paymentMethod" id="method" :disabled="toggleDisabledPayMethod">
+              <option id="optionId" :value="togglePayMethod">선택</option>
               <option value="카드">카드</option>
               <option value="계좌이체">계좌이체</option>
             </select>
@@ -212,6 +212,7 @@
         </div>
       </div>
     </div>
+    <button type="submit" id="paymentBtn">결제하기</button>
   </div>
 </template>
 
@@ -220,7 +221,7 @@ import {ref} from 'vue';
 export default {
   setup(){
     const member = ref(
-      {id: 1, name: '홍길동', email: 'kosa@metanet.com', phone: '010-1234-5678', address: '서울', point: 2000}
+      {id: 1, name: '홍길동', email: 'kosa@metanet.com', phone: '010-1234-5678', address: '서울', point: 20000}
     );
     const products = ref([
       {id: 1, brand: '스윗밸런스', price: 5900, name: '오늘의 샐러드', img_url: '1655775819130l0.jpg', quantity: 2}
@@ -229,15 +230,24 @@ export default {
     const totalPrice = ref(products.value[0].price * products.value[0].quantity);
     const paymentAmount = ref(totalPrice.value - usePoint.value);
     const toggleErrorMsg = ref(false);
+    const togglePayMethod = ref('');
+    const toggleDisabledPayMethod = ref(false);
  
     const inputPoint = () => {
+      togglePayMethod.value = '';
+      toggleDisabledPayMethod.value = false;
       if(totalPrice.value < usePoint.value || member.value.point < usePoint.value){
         toggleErrorMsg.value = true;
         usePoint.value = 0;
+        paymentAmount.value = totalPrice.value - usePoint.value;
       }
       else{
         toggleErrorMsg.value = false;
         paymentAmount.value = totalPrice.value - usePoint.value;
+        if(paymentAmount.value == 0){
+          togglePayMethod.value = '적립금';
+          toggleDisabledPayMethod.value = true;
+        }
       }
     }
 
@@ -249,6 +259,8 @@ export default {
       paymentAmount,
       inputPoint,
       toggleErrorMsg,
+      togglePayMethod,
+      toggleDisabledPayMethod,
     }
   }
 }
